@@ -62,3 +62,41 @@ Recurrent neural networks (RNN) allow neural networks to take input with variabl
 ### 1-D CNNs
 
 Convolutions have shown great success in speech and image classification, so we adopt the 1-D convolutional neural net (CNN) described by Rajpurkar et al. Their architecture is a deep CNN with 33 layers, residual connections, and an increasing number of channels combined with decreasing dimensionality. We found residual connections necessary to train anything deeper than 3 layers. Opting for a simpler architecture, we used only 9 layers and achieved 76.1\% top-1 accuracy and 92.3\% top-3 accuracy.
+
+## Experiments: Segmentation
+
+### Reinforcement Learning
+
+In a reinforcement learning environment, the problem is represented by
+- an agent taking an action,
+- a space of all possible actions that the agent can make,
+- a space of possible states which the agent observes when making an action, and
+- a reward the agent receives from making an action.
+
+The goal is to train the agent to maximize the reward it can get by choosing actions that cause favorable states.
+
+Consider a sliding window stretching out a certain distance from the beginning of an audio segment. We can represent the segmentation problem as a reinforcement learning environment by considering this window to be an agent that can either accept the current segment as a phoneme or expand the window to consider more samples of audio. We then define the state as the audio samples currently inside the window. Thus at each stage the window decides either to "expand" to consider more audio or "match" the current audio. The process then repeats starting at the end of the matched segment from the completed iteration.
+
+For the reward function, we trained a machine learning model that is able to identify whether a given sample of audio is a phoneme segment or not. The architecture of this model is identical to the classification model, but instead of outputting a probability distribution, it outputs a single value that represents how likely it is that a given sample is a phoneme. We accomplished this task using the same TIMIT training data, and we generated a batch of random audio segments (not phonemes) from the same training audio.  
+
+Let $U$ be the space of all possible audio segments of our training data and $P \subset U$ be the space of phoneme audio segments. $x \sim P$ is an audio segment from the training data and $z \sim U$ is a randomly generated audio segment. Let $R:U\rightarrow\mathbb R$ be a score function, mapping from the audio segment to a real number (high score means a likely phoneme, low score means not a phoneme).  We attempt to minimize the loss:
+
+$`
+\begin{align*}
+L = &\mathbb E[\text{clip}\{R(z),-10,10\}] \\
+ &- \mathbb E[\text{clip}\{R(x),-10,10\}] \\
+ &- \mathbb E[|R(z)-\text{clip}\{R(z),-10,10\}|] \\
+ &- \mathbb E[|R(x)-\text{clip}\{R(x),-10,10\}|]
+\end{align*}
+`$
+
+where $`\text{clip}\{ a,b,c \} = \min\{\max\{a,b\},c\}`$.
+
+Intuitively, minimizing the loss function will minimize the score we get from the randomly generated segments and maximize the score of the actual phoneme segments. We restrict the scores to be between -10 and 10 to avoid exploding scores, but we penalize the score for leaving this boundary. These penalties help the optimization avoid local minima. The explanation for each term in the loss is as follows.
+
+- Minimize the output for random audio segments.
+- Maximize the output for segments containing phonemes.
+- Penalize scores outside $(-10,10)$ for random audio segments.
+- Penalize scores outside $(-10,10)$ for segments containing phonemes.
+
+Once we have a trained recognizer, we can use the scores it outputs as the reward for our reinforcement learning environment. We use Proximal Policy Optimization (PPO) algorithm to accomplish the reinforcement learning task. Since the states are segments of audio that are of variable length, we use the output of the LSTM so that the states are always a fixed size. The policy network and the value network of the PPO implementation are both composed of 5 fully connected layers. The policy network outputs a probability distribution of each action to take, and the agent samples an action from that distribution. This way, the agent can explore less probable actions while exploiting more probable actions. It then uses the output of the value network of the same input state in order to learn a better action distribution.
