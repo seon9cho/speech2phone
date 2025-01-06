@@ -45,7 +45,7 @@ The Fourier transform is a common signal processing technique that finds the rep
 
 <div align="center">
 
-  <img src="./readme_visuals/audio_raw_alpha.png" width="400"> <img src="./readme_visuals/audio_dft.png" width="400">
+  <img src="./readme_visuals/audio_raw.png" width="400"> <img src="./readme_visuals/audio_dft.png" width="400">
   
   Figure 1: On the left, the raw audio waveform of one utterance of the phoneme /b/ is plotted over time. <br>
   On the right, the same audio has been mapped to the frequency domain using the discrete Fourier <br>transform. Generally, similar-sounding phonemes have similar representations in the frequency domain.
@@ -58,7 +58,7 @@ We start by producing simple baselines for classifying phonemes using common mac
 ### Random Forests
 
 Random forests consistently lie among the top-performing classical machine learning methods. Random forests are an ensemble of decision trees, with each decision tree trained on a subset of the training features and a subset of the training data. 
-<img align="right" src="./readme_visuals/resnet1d_architecture-removebg.png" width="400">
+<img align="right" src="./readme_visuals/resnet1d_architecture.png" width="400">
 We performed hyperparameter optimization over the number of decision trees included.
 
 ### KNN
