@@ -65,6 +65,23 @@ Convolutions have shown great success in speech and image classification, so we 
 
 ## Experiments: Segmentation
 
+<div align="center">
+  <b>ground truth</b>
+  
+  | | | | | | | | | | | | | | | | | | | | |
+  | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
+  | segments | 1819 | | 2640 | | 3926 | | 4200 | | 4840 | | 6809 | | 7400 | | 8187 | | 9480 | | 10360 |
+  | phoneme | | k | | em | | pcl | | p | | er | | ax | | bcl | | el | | tcl | |
+  
+  <b>prediction</b>
+  | | | | | | | | | | | | | | | | | | | | |
+  | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
+  | segments | 1800 | | 2300 | | 2900 | | 3800 | | 4400 | | 4900 | | 7600 | | 8300 | | 9500 | | 10300 |
+  | top three<br>predictions | | k<br>g<br>t | | epi<br>kcl<br>pau | | en<br>em<br>m | | pcl<br>bcl<br>dcl | | b<br>p<br>d | | er<br>axr<br>uh | | bcl<br>dcl<br>b | | uh<br>el<br>ax | | kcl<br>ix<br>n | |
+  
+  Table 2: Snippet of audio from the test set segmented using the reinforcement learning agent. The segments created by the model are listed along with the resulting top three classifications given by the RNN model.
+</div>
+
 ### Reinforcement Learning
 
 In a reinforcement learning environment, the problem is represented by
