@@ -44,10 +44,11 @@ Short phonemes are often difficult to recognize because there are so few samples
 The Fourier transform is a common signal processing technique that finds the representation of a segment of audio in terms of linear combinations of frequencies. An example of the difference between raw audio and the Fourier transform is shown in Figure 4. The melody filter (or mel filter) was developed to draw out the frequencies in a way that represents the range perceived by the human auditory system. The intuition of its use as an embedding is that this exact type of preprocessing occurs in the beginning stages of human auditory processing as well.
 
 <div align="center">
+
+  <img src="./readme_visuals/audio_raw_alpha.png" width="400"> <img src="./readme_visuals/audio_dft.png" width="400">
   
-  ![image](./readme_visuals/audio_raw.png) ![image](./readme_visuals/audio_dft.png)
-  
-  Figure 1: On the left, the raw audio waveform of one utterance of the phoneme /b/ is plotted over time. On the right, the same audio has been mapped to the frequency domain using the discrete Fourier transform. Generally, similar-sounding phonemes have similar representations in the frequency domain.
+  Figure 1: On the left, the raw audio waveform of one utterance of the phoneme /b/ is plotted over time. <br>
+  On the right, the same audio has been mapped to the frequency domain using the discrete Fourier <br>transform. Generally, similar-sounding phonemes have similar representations in the frequency domain.
 </div>
 
 ## Experiments: Classification
