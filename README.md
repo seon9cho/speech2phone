@@ -57,7 +57,7 @@ We start by producing simple baselines for classifying phonemes using common mac
 ### Random Forests
 
 Random forests consistently lie among the top-performing classical machine learning methods. Random forests are an ensemble of decision trees, with each decision tree trained on a subset of the training features and a subset of the training data. 
-<img align="right" src="./readme_visuals/resnet1d_architecture.png" width="400">
+<img align="right" src="./readme_visuals/resnet1d_architecture-removebg.png" width="400">
 We performed hyperparameter optimization over the number of decision trees included.
 
 ### KNN
