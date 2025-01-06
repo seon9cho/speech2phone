@@ -56,7 +56,9 @@ We start by producing simple baselines for classifying phonemes using common mac
 
 ### Random Forests
 
-Random forests consistently lie among the top-performing classical machine learning methods. Random forests are an ensemble of decision trees, with each decision tree trained on a subset of the training features and a subset of the training data. We performed hyperparameter optimization over the number of decision trees included.
+Random forests consistently lie among the top-performing classical machine learning methods. Random forests are an ensemble of decision trees, with each decision tree trained on a subset of the training features and a subset of the training data. 
+<img align="right" src="./readme_visuals/resnet1d_architecture.png" width="400">
+We performed hyperparameter optimization over the number of decision trees included.
 
 ### KNN
 
@@ -69,8 +71,11 @@ Recurrent neural networks (RNN) allow neural networks to take input with variabl
 ### 1-D CNNs
 
 Convolutions have shown great success in speech and image classification, so we adopt the 1-D convolutional neural net (CNN) described by Rajpurkar et al. Their architecture is a deep CNN with 33 layers, residual connections, and an increasing number of channels combined with decreasing dimensionality. We found residual connections necessary to train anything deeper than 3 layers. Opting for a simpler architecture, we used only 9 layers and achieved 76.1\% top-1 accuracy and 92.3\% top-3 accuracy.
-
-<img style="float: right;" src="./readme_visuals/resnet1d_architecture.png" width="200">
+<br>
+<br>
+<div align="right">
+  Figure 2: Architecture of the 1-D convolutional ResNet.
+</div>
 
 ## Experiments: Segmentation
 
