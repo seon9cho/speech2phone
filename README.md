@@ -104,3 +104,37 @@ Once we have a trained recognizer, we can use the scores it outputs as the rewar
 ## Scoring
 
 Since there isn't a standardized way of scoring a time series segmentation, we devised a distance metric for positively matched segments and also report the precision and recall. We start by pairing each predicted segment to the closest target segment. Some predicted segments will be paired with the same target segment, and so we remove the ones that are more distant. The unpaired predicted segments are counted as false positives while the unpaired target segments are counted as false negatives. Using these scoring methods, the reinforcement learning segmentation model positively matched segments within 9.398 ms on average, with precision of 70.65\% and recall of 88.62\%.
+
+## Optimization Techniques
+
+### Hyperparameter Search
+
+Hyperparameter selection is of paramount importance. Some techniques, in order of increasing quality, are manual search, grid search, random search, and Bayesian optimization. Manual search, also called graduate student descent, involves a human trying one configuration, then trying another, and so on. Grid search tries all possible combinations of various hyperparameter configurations which are manually chosen. Random search tries random combinations within the grid, and has been shown to perform better than grid search. Bayesian optimization uses prior evaluations to construct a probability distribution (such as a Gaussian mixture model) over the hyperparameter space, similar to the multi-armed bandit problem. Bayesian optimization has been shown to produce superior results, so we use it via the _hyperopt_ package.
+
+### Batch Size
+
+We found that larger batch sizes improved test accuracy, with a size of 512 performing best. At the one extreme, using the entire dataset (batch size 132,000) to compute a single gradient is a slow, yet highly accurate gradient estimate, with little variance. At the other extreme, using a single draw of data (batch size 1) gives a fast, yet possibly inaccurate gradient estimate, with high variance. We desire the golden mean of these two extremes, with enough accuracy to converge to a global minimum but enough variance to escape poor local minima.
+
+### Learning Rate
+
+The learning rate is crucial to training, but selecting an optimal fixed value is difficult. Simulated annealing, where the learning rate is gradually decreased over time, consistently outperforms fixed learning rates. Cyclical learning rate schedules do even better, but can be tough to tune and require stochastic gradient descent instead of the Adam optimizer. Since algorithms, architectures, and embeddings are intrinsically more interesting than hand-tuned learning rate schedules, we took the middle ground of automatically decreasing the learning rate upon plateau---whenever validation accuracy hadn't improved for three epochs, the learning rate was divided by 10. We believe this approach is a vast improvement over selecting a fixed rate, and it requires no additional manual rate tuning.
+
+## Results
+
+Table 5 lists the accuracy scores for classification on TIMIT using several of the above-mentioned models and embeddings. It is interesting to note the high performance of KNN on the mel embedding, which implies that mel is a good separating representation. We may be able to use this embedding as a loss function to train segmentation models in the future, as described in the Future Work section.
+
+Figure 4 contains the confusion matrix for the 1-D CNN model, which was the best-performing model we trained. The best models we trained were an RNN and a 1-D CNN. They achieved 73.0\% and 76.1\% accuracy respectively.
+
+Table 2 shows a small example of how the segmentation agent and the classification model transcribe a section of audio into phonemes. The top three predictions of the phonemes for each segments can then be used to graph a statistical model that produces sentences in the desired language.
+
+## Future Work
+
+We plan to use our classification models to create a new loss function for training segmentation models, instead of using the "phoneme-or-not" model. In particular, we will perform more experimentation to determine a better reward function for our reinforcement learning approach. Other models for segmentation could be devised by embedding the training data in a representative space and then using the distance from $k$ nearest neighbors as a metric for "phoneme-ness".
+
+We also plan to experiment with the hyperparameters of the embeddings we used, as well as new embedding algorithms like UMAP. Our results demonstrate the value of good preprocessing when working with highly correlated data like audio.
+
+TIMIT is a relatively small dataset, and we feel that we could use semi-supervised learning techniques to help models generalize to a wider variety of data. Semi-supervised learning will likely improve the performance on utterances from speakers unseen by the model. 
+
+With similar datasets from other languages, we could also build a phoneme recognition model that could transcribe any spoken language into phonetic alphabets, which makes a universal acoustic model possible. We can then build a statistical language model specific to each language, similar to how speech recognition is traditionally done, which would graph the phonemes into standard orthography.
+
+
