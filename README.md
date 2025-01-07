@@ -92,6 +92,14 @@ Convolutions have shown great success in speech and image classification, so we 
   Table 2: Snippet of audio from the test set segmented using the reinforcement learning agent. The segments created by the model are listed along with the resulting top three classifications given by the RNN model.
 </div>
 
+<div align="center">
+  
+  <img align="right" src="./readme_visuals/phoneme_length_distributions.png">
+
+  Figure 3: Density functions of the normal distributions matching the experimental mean and variance of each phoneme's length in TIMIT. The shortest phonemes were /b/, /d/, and /ɹ/ (e.g. "d" in "muddy"), while the longest were /oi/ ("oy" in "boy"), /au/ ("ou" in "about"), and /\ae/ ("a" in "bat"). Note the power-law distribution of mean lengths.
+</div>
+
+
 ### Reinforcement Learning
 
 In a reinforcement learning environment, the problem is represented by
