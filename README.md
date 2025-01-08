@@ -41,7 +41,10 @@ Phonemes vary in length. Vowels tend to be longer than consonants, and the short
   
   <img align="right" src="./readme_visuals/phoneme_length_distributions.png">
 
-  Figure 3: Density functions of the normal distributions matching the experimental mean and variance of each phoneme's length in TIMIT. The shortest phonemes were /b/, /d/, and /ɹ/ (e.g. "d" in "muddy"), while the longest were /oi/ ("oy" in "boy"), /au/ ("ou" in "about"), and /\ae/ ("a" in "bat"). Note the power-law distribution of mean lengths.
+  Figure 3: Density functions of the normal distributions matching the experimental mean and <br>
+  variance of each phoneme's length in TIMIT. The shortest phonemes were /b/, /d/, and /ɹ/ <br>
+  (e.g. "d" in "muddy"), while the longest were /oi/ ("oy" in "boy"), /au/ ("ou" in "about"), <br>
+  and /\ae/ ("a" in "bat"). Note the power-law distribution of mean lengths.
 </div>
 
 Short phonemes are often difficult to recognize because there are so few samples that the variance overpowers the signal. To provide better signal we pad every phoneme with up to 500 samples on either side. This increased the accuracy of our models by about 10\%. Unfortunately, padding also means that fewer samples actually come from the window where the phoneme is expressly being uttered; this could increase the model's confusion between phonemes that appear in similar contexts (e.g. /d/ and /t/ in "bat" and "bad").
