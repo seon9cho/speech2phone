@@ -187,6 +187,21 @@ The learning rate is crucial to training, but selecting an optimal fixed value i
 
 ## Results
 
+<div align="center">
+  
+  | Model | mel | random proj. |
+  | :--------: | :------------: | :------------: |
+  | log. reg. | 0.344 | |
+  | FCNN | 0.348 | |
+  | random forest | **0.415** | |
+  | XGBoost | **0.357** | 0.109 |
+  | KNN | **0.377** | |
+  | QDA | **0.232** | |
+  | $k$-means | 0.053 |
+
+  Table 5: Accuracy scores for classification on TIMIT using various models and embeddings. The best three appear in bold. Length $k$-means was a classification based on purely the length of the segment.
+</div>
+
 Table 5 lists the accuracy scores for classification on TIMIT using several of the above-mentioned models and embeddings. It is interesting to note the high performance of KNN on the mel embedding, which implies that mel is a good separating representation. We may be able to use this embedding as a loss function to train segmentation models in the future, as described in the Future Work section.
 
 Figure 4 contains the confusion matrix for the 1-D CNN model, which was the best-performing model we trained. The best models we trained were an RNN and a 1-D CNN. They achieved 73.0\% and 76.1\% accuracy respectively.
