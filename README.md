@@ -37,6 +37,13 @@ Choosing an efficient representation of speech data is important, because segmen
 
 Phonemes vary in length. Vowels tend to be longer than consonants, and the shortest phonemes are often stops like /d/. (Figure 3 demonstrates the mean and variance of each phoneme in TIMIT.) Many of the models we use require input of fixed length, meaning that the raw audio must be resampled to the correct size in order to be passed as input to these models. One method of resampling involves interpolation of the raw audio samples, and then evaluation of the interpolating function to get the resampled points.
 
+<div align="center">
+  
+  <img align="right" src="./readme_visuals/phoneme_length_distributions.png">
+
+  Figure 3: Density functions of the normal distributions matching the experimental mean and variance of each phoneme's length in TIMIT. The shortest phonemes were /b/, /d/, and /ɹ/ (e.g. "d" in "muddy"), while the longest were /oi/ ("oy" in "boy"), /au/ ("ou" in "about"), and /\ae/ ("a" in "bat"). Note the power-law distribution of mean lengths.
+</div>
+
 Short phonemes are often difficult to recognize because there are so few samples that the variance overpowers the signal. To provide better signal we pad every phoneme with up to 500 samples on either side. This increased the accuracy of our models by about 10\%. Unfortunately, padding also means that fewer samples actually come from the window where the phoneme is expressly being uttered; this could increase the model's confusion between phonemes that appear in similar contexts (e.g. /d/ and /t/ in "bat" and "bad").
 
 ### Mel spectrogram
@@ -92,14 +99,6 @@ Convolutions have shown great success in speech and image classification, so we 
   Table 2: Snippet of audio from the test set segmented using the reinforcement learning agent. The segments created by the model are listed along with the resulting top three classifications given by the RNN model.
 </div>
 
-<div align="center">
-  
-  <img align="right" src="./readme_visuals/phoneme_length_distributions.png">
-
-  Figure 3: Density functions of the normal distributions matching the experimental mean and variance of each phoneme's length in TIMIT. The shortest phonemes were /b/, /d/, and /ɹ/ (e.g. "d" in "muddy"), while the longest were /oi/ ("oy" in "boy"), /au/ ("ou" in "about"), and /\ae/ ("a" in "bat"). Note the power-law distribution of mean lengths.
-</div>
-
-
 ### Reinforcement Learning
 
 In a reinforcement learning environment, the problem is represented by
@@ -150,9 +149,39 @@ Hyperparameter selection is of paramount importance. Some techniques, in order o
 
 We found that larger batch sizes improved test accuracy, with a size of 512 performing best. At the one extreme, using the entire dataset (batch size 132,000) to compute a single gradient is a slow, yet highly accurate gradient estimate, with little variance. At the other extreme, using a single draw of data (batch size 1) gives a fast, yet possibly inaccurate gradient estimate, with high variance. We desire the golden mean of these two extremes, with enough accuracy to converge to a global minimum but enough variance to escape poor local minima.
 
+<div align="left">
+  
+  | Batch Size | Top-1 Accuracy | Top-3 Accuracy |
+  | :--------: | :------------: | :------------: |
+  | 16 | 57.2 | 84.1 |
+  | 32 | 62.5 | 87.0 |
+  | 64 | 66.6 | 89.6 |
+  | 128 | 67.8 | 92.2 |
+  | 256 | 69.2 | 92.1 |
+  | 512 | 69.6 | **92.6** |
+  | 1024 | 71.8 | 92.0 |
+  | 2048 | **74.9** | 92.1 |
+  | 4096 | 67.7 | 90.0 |
+
+  Table 3: Effect of batch size on test accuracy. Experiments were performed with the 1-D convolutional ResNet for 10 epochs.
+</div>
+
 ### Learning Rate
 
 The learning rate is crucial to training, but selecting an optimal fixed value is difficult. Simulated annealing, where the learning rate is gradually decreased over time, consistently outperforms fixed learning rates. Cyclical learning rate schedules do even better, but can be tough to tune and require stochastic gradient descent instead of the Adam optimizer. Since algorithms, architectures, and embeddings are intrinsically more interesting than hand-tuned learning rate schedules, we took the middle ground of automatically decreasing the learning rate upon plateau---whenever validation accuracy hadn't improved for three epochs, the learning rate was divided by 10. We believe this approach is a vast improvement over selecting a fixed rate, and it requires no additional manual rate tuning.
+
+<div align="left">
+  
+  | LR Schedule | Top-1 Accuracy | Top-3 Accuracy |
+  | :--------: | :------------: | :------------: |
+  | None | 69.3 | 90.2 |
+  | Step LR | 71.2 | 91.1 |
+  | Reduced LR On Plateau | **72.4** | **92.9** |
+  | Exponential Decay | 70.0 | 91.1 |
+
+  Table 4: Effect of learning rate schedules on accuracy of model on the test set. Top-1 refers to the accuracy of the classification given highest probability by the model, and top-3 refers to the accuracy of the three classifications with highest probability. Experiments were performed with the 1-D convolutional ResNet for 30 epochs, batch size 512, Adam with initial learning rate 1e-2. StepLR multiplies the learning rate by 0.1 every 10 epochs. ReduceLROnPlateau multiplies the learning rate by 0.1 whenever validation accuracy does not improve for three epochs in a row. ExponentialDecay multiplies the learning rate by 0.9 every epoch.}
+\label{tab:batch-size
+</div>
 
 ## Results
 
