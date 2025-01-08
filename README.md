@@ -149,7 +149,7 @@ Hyperparameter selection is of paramount importance. Some techniques, in order o
 
 We found that larger batch sizes improved test accuracy, with a size of 512 performing best. At the one extreme, using the entire dataset (batch size 132,000) to compute a single gradient is a slow, yet highly accurate gradient estimate, with little variance. At the other extreme, using a single draw of data (batch size 1) gives a fast, yet possibly inaccurate gradient estimate, with high variance. We desire the golden mean of these two extremes, with enough accuracy to converge to a global minimum but enough variance to escape poor local minima.
 
-<div align="left">
+<div align="center">
   
   | Batch Size | Top-1 Accuracy | Top-3 Accuracy |
   | :--------: | :------------: | :------------: |
@@ -170,7 +170,7 @@ We found that larger batch sizes improved test accuracy, with a size of 512 perf
 
 The learning rate is crucial to training, but selecting an optimal fixed value is difficult. Simulated annealing, where the learning rate is gradually decreased over time, consistently outperforms fixed learning rates. Cyclical learning rate schedules do even better, but can be tough to tune and require stochastic gradient descent instead of the Adam optimizer. Since algorithms, architectures, and embeddings are intrinsically more interesting than hand-tuned learning rate schedules, we took the middle ground of automatically decreasing the learning rate upon plateau---whenever validation accuracy hadn't improved for three epochs, the learning rate was divided by 10. We believe this approach is a vast improvement over selecting a fixed rate, and it requires no additional manual rate tuning.
 
-<div align="left">
+<div align="center">
   
   | LR Schedule | Top-1 Accuracy | Top-3 Accuracy |
   | :--------: | :------------: | :------------: |
