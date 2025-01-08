@@ -163,7 +163,7 @@ We found that larger batch sizes improved test accuracy, with a size of 512 perf
   | 2048 | **74.9** | 92.1 |
   | 4096 | 67.7 | 90.0 |
 
-  Table 3: Effect of batch size on test accuracy. Experiments were performed with the 1-D convolutional ResNet for 10 epochs.
+  Table 3: Effect of batch size on test accuracy. Experiments were <br> performed with the 1-D convolutional ResNet for 10 epochs.
 </div>
 
 ### Learning Rate
@@ -179,8 +179,7 @@ The learning rate is crucial to training, but selecting an optimal fixed value i
   | Reduced LR On Plateau | **72.4** | **92.9** |
   | Exponential Decay | 70.0 | 91.1 |
 
-  Table 4: Effect of learning rate schedules on accuracy of model on the test set. Top-1 refers to the accuracy of the classification given highest probability by the model, and top-3 refers to the accuracy of the three classifications with highest probability. Experiments were performed with the 1-D convolutional ResNet for 30 epochs, batch size 512, Adam with initial learning rate 1e-2. StepLR multiplies the learning rate by 0.1 every 10 epochs. ReduceLROnPlateau multiplies the learning rate by 0.1 whenever validation accuracy does not improve for three epochs in a row. ExponentialDecay multiplies the learning rate by 0.9 every epoch.}
-\label{tab:batch-size
+  Table 4: Effect of learning rate schedules on accuracy of model on the test set. Top-1 refers to the accuracy of the classification given highest probability by the model, and top-3 refers to the accuracy of the three classifications with highest probability. Experiments were performed with the 1-D convolutional ResNet for 30 epochs, batch size 512, Adam with initial learning rate 1e-2. StepLR multiplies the learning rate by 0.1 every 10 epochs. ReduceLROnPlateau multiplies the learning rate by 0.1 whenever validation accuracy does not improve for three epochs in a row. ExponentialDecay multiplies the learning rate by 0.9 every epoch.
 </div>
 
 ## Results
