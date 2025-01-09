@@ -218,4 +218,8 @@ TIMIT is a relatively small dataset, and we feel that we could use semi-supervis
 
 With similar datasets from other languages, we could also build a phoneme recognition model that could transcribe any spoken language into phonetic alphabets, which makes a universal acoustic model possible. We can then build a statistical language model specific to each language, similar to how speech recognition is traditionally done, which would graph the phonemes into standard orthography.
 
+<div align="center">
+  <img src="./readme_visuals/cm_inv.png">
+  Figure 4: Confusion matrix for phoneme classification on the test set with the 1-D convolutional model.
+</div>
 
